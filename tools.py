@@ -31,6 +31,14 @@ import pygame
 # ================================
 
 load_dotenv()
+
+contacts = {
+        "Anil": "+917439932452",
+        "Mummy": "+913784567273",
+        "Priya": "+918765432109"
+    }
+
+
 def system_check():
     info = {
         "System": platform.system(),
@@ -164,11 +172,6 @@ def get_weather():
 
 def whatsapp_call(name, type):
     call_type = type
-    contacts = {
-        "Anil": "+917289962452",
-        "Mummy": "+919990667273",
-        "Priya": "+918765432109"
-    }
     number = contacts.get(name)
     if not number:
         print(f"Contact '{name}' not found.")
@@ -195,11 +198,6 @@ def whatsapp_call(name, type):
 
 def send_message(name, message):
     # Example contact list
-    contacts = {
-        "Anil": "+917439932452",
-        "Mummy": "+913784567273",
-        "Priya": "+918765432109"
-    }
 
     # Check if name exists in the contacts
     number = contacts.get(name)
