@@ -19,6 +19,7 @@ import platform
 import re
 from comtypes import CLSCTX_ALL
 import screen_brightness_control as sbc  # For brightness control
+from dotenv import load_dotenv
 
 # For volume control
 from ctypes import cast, POINTER
@@ -28,6 +29,8 @@ import pygame
 # ================================
 # TOOLS SECTION
 # ================================
+
+load_dotenv()
 def system_check():
     info = {
         "System": platform.system(),
@@ -110,7 +113,7 @@ def get_weather():
         A JSON-formatted string with the above weather details.
     """
     # Embedded API key
-    api_key = "779d9b8f4622f147a67ae50d35331a38"
+    api_key = os.getenv("WEATHER_API_KEY")
 
     # Use the forecast endpoint to get weather data
     try:

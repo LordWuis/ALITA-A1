@@ -382,24 +382,30 @@ def stream_generate_response(query):
             response_generator = ollama.chat(
                 model="helper",
                 messages=[{'role': 'user', 'content': f'Data: {tool_response}, query: {query}'}],
-                options={'num_gpu_layers': 55},
+                options={'num_gpu_layers': 50},
                 stream=True
             )
+
             buffer = ""
-            last_flush = time.time()
             for chunk in response_generator:
                 token = chunk['message']['content']
                 buffer += token
-                # Flush if we detect sentence-ending punctuation or after 0.2 seconds
-                if re.search(r'[.!?]\s*$', buffer) or (time.time() - last_flush) > 0.2:
-                    # Attempt to split into sentences
-                    sentences = sentence_endings.split(buffer)
-                    for sentence in sentences[:-1]:
-                        if sentence.strip():
-                            sentence_queue.put(sentence.strip())
-                            print("Queued sentence:", sentence.strip())
-                    buffer = sentences[-1]
-                    last_flush = time.time()
+
+                # Check for sentence completion using regex
+                while True:
+                    match = sentence_endings.search(buffer)
+                    if not match:
+                        break
+
+                    # Extract sentence up to the matched punctuation
+                    sentence = buffer[:match.end()].strip()
+                    buffer = buffer[match.end():]
+
+                    if sentence:
+                        sentence_queue.put(sentence)
+                        print("Queued sentence:", sentence)
+
+            # Queue any remaining text in the buffer
             if buffer.strip():
                 sentence_queue.put(buffer.strip())
                 print("Queued sentence:", buffer.strip())
@@ -411,24 +417,30 @@ def stream_generate_response(query):
             response_generator = ollama.chat(
                 model="chatbot",
                 messages=[{'role': 'user', 'content': f'query: {query}'}],
-                options={'num_gpu_layers': 55},
+                options={'num_gpu_layers': 50},
                 stream=True
             )
+
             buffer = ""
-            last_flush = time.time()
             for chunk in response_generator:
                 token = chunk['message']['content']
                 buffer += token
-                # Flush if we detect sentence-ending punctuation or after 0.2 seconds
-                if re.search(r'[.!?]\s*$', buffer) or (time.time() - last_flush) > 0.2:
-                    # Attempt to split into sentences
-                    sentences = sentence_endings.split(buffer)
-                    for sentence in sentences[:-1]:
-                        if sentence.strip():
-                            sentence_queue.put(sentence.strip())
-                            print("Queued sentence:", sentence.strip())
-                    buffer = sentences[-1]
-                    last_flush = time.time()
+
+                # Check for sentence completion using regex
+                while True:
+                    match = sentence_endings.search(buffer)
+                    if not match:
+                        break
+
+                    # Extract sentence up to the matched punctuation
+                    sentence = buffer[:match.end()].strip()
+                    buffer = buffer[match.end():]
+
+                    if sentence:
+                        sentence_queue.put(sentence)
+                        print("Queued sentence:", sentence)
+
+            # Queue any remaining text in the buffer
             if buffer.strip():
                 sentence_queue.put(buffer.strip())
                 print("Queued sentence:", buffer.strip())
