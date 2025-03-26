@@ -1,0 +1,25 @@
+pyttsx3
+SpeechRecognition
+soundfile
+PyAudio
+numpy
+kokoro_onnx
+kokoro
+misaki
+ollama
+comtypes
+pywin32
+screen-brightness-control
+pycaw
+requests
+json5  # Optional if JSON5 files are used, but not necessary for plain JSON
+psutil
+threading
+dateparser
+playsound
+pywhatkit
+pyautogui
+comtypes
+pywin32
+screen-brightness-control
+pycaw
