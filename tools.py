@@ -196,8 +196,8 @@ def whatsapp_call(name, type):
 def send_message(name, message):
     # Example contact list
     contacts = {
-        "Anil": "+917289962452",
-        "Mummy": "+919990667273",
+        "Anil": "+917439932452",
+        "Mummy": "+913784567273",
         "Priya": "+918765432109"
     }
 
