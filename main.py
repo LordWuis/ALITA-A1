@@ -11,6 +11,7 @@ import datetime
 from groq import Groq
 import os
 from dotenv import load_dotenv
+import keyboard
 
 
 # Load environment variables from .env file
@@ -47,8 +48,8 @@ cancel_event = threading.Event()
 query_queue = queue.Queue()          # Queue for incoming queries
 sentence_queue = queue.Queue()       # Queue for complete sentences from LLM
 
-WAKE_WORD = "nova"
-USER = "Aman"
+WAKE_WORD = "alita"
+USER = "Lord"
 is_sleeping = True
 sleep_timer = None
 
@@ -126,7 +127,7 @@ class InstantTTS:
 
 
 # Create an instance of InstantTTS
-tts = InstantTTS(voice="af_heart")
+tts = InstantTTS(voice="af_bella")
 
 # ------------------------------------------------------------------------------
 # LLM Response Streaming
@@ -475,6 +476,7 @@ def listen_for_query():
                 audio = recognizer.listen(source, timeout=1)
                 text = recognizer.recognize_google(audio)
                 print(f"You said: {text}")
+                keyboard.send('stop media')
                 if WAKE_WORD in text.lower():
                     print(f"{WAKE_WORD} is awake now.")
                     is_sleeping = False

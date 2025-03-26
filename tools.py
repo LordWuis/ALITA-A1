@@ -229,8 +229,11 @@ def send_message(name, message):
 
 def get_time():
     now = datetime.now()
-    current_time = now.strftime("%I:%M %p")
-    return current_time
+    hours = now.hour % 12 or 12  # Convert to 12-hour format
+    minutes = now.minute
+    am_pm = "AM" if now.hour < 12 else "PM"
+    return f"{hours}:{minutes} {am_pm}"
+
 
 
 def search_web(query):
